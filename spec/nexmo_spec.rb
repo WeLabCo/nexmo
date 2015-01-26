@@ -30,12 +30,13 @@ describe 'Nexmo::Client' do
   end
 
   describe 'send_message method' do
-    it 'posts to the sms json resource and returns the message id' do
-      response_body = json_response_body('{"messages":[{"status":0,"message-id":"id"}]}')
+    it 'posts to the sms json resource and returns the json body' do
+      payload = {"message-count"=>1, "messages"=>[{"status"=>0, "message-id"=>"id", "network"=>"HK-FIXED"}]}
+      response_body = json_response_body(payload.to_json)
 
       stub_request(:post, "#@base_url/sms/json").with(@form_urlencoded_data).to_return(response_body)
 
-      @client.send_message(@example_message_hash).must_equal('id')
+      @client.send_message(@example_message_hash).must_equal(payload)
     end
 
     it 'raises an exception if the response body contains an error' do

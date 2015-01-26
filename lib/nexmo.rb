@@ -30,7 +30,7 @@ module Nexmo
       status = item['status'].to_i
 
       if status == 0
-        item['message-id']
+        response
       else
         raise Error, "#{item['error-text']} (status=#{status})"
       end
